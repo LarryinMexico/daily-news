@@ -18,6 +18,7 @@ from news_fetcher import (
 from site_url import resolve_site_url
 from stock_fetcher import fetch_market_map, fetch_symbol_snapshot, fetch_watchlist_quotes, load_watchlist
 from telegram_sender import escape_markdown_v2, send_markdown_messages
+from trump_curator import curate_trump_source_material
 
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
@@ -97,6 +98,8 @@ Rules:
 - Use 1 to 3 items for trump_updates.
 - Use 3 to 5 items for financial_news.
 - Base impact on Taiwanese equities and technology names when relevant.
+- For trump_updates, prioritize Truth Social first. Only use media items if they clearly describe Trump's own policy statement or market-relevant announcement.
+- Exclude personality, religion, court drama, family, health cabinet gossip, and other non-market stories from trump_updates.
 - If the source material is thin, still return complete fields and be explicit about uncertainty.
 
 US market close:
@@ -254,7 +257,7 @@ def main() -> None:
         newsapi_items + google_business_items + google_macro_items,
         max_items=8,
     )
-    trump_articles = dedupe_articles(trump_truth_items + trump_search_items, max_items=4)
+    trump_articles = curate_trump_source_material(trump_truth_items, trump_search_items, max_items=4)
 
     print(f"[TW digest] Financial articles after dedupe: {len(financial_articles)}")
     print(f"[TW digest] Trump articles after dedupe: {len(trump_articles)}")

@@ -7,6 +7,20 @@ const state = {
   typeDateCache: new Map(),
 };
 
+const THEME_ICONS = {
+  dark: `
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"></path>
+    </svg>
+  `,
+  light: `
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="4.2"></circle>
+      <path d="M12 2.5v2.4M12 19.1v2.4M4.9 4.9l1.7 1.7M17.4 17.4l1.7 1.7M2.5 12h2.4M19.1 12h2.4M4.9 19.1l1.7-1.7M17.4 6.6l1.7-1.7"></path>
+    </svg>
+  `,
+};
+
 const elements = {
   themeToggle: document.getElementById("theme-toggle"),
   themeToggleIcon: document.getElementById("theme-toggle-icon"),
@@ -37,7 +51,7 @@ function formatDateText(dateString) {
 
 function formatNumber(value) {
   if (value === null || value === undefined || Number.isNaN(Number(value))) {
-    return "⚠️ 資料暫時無法取得";
+    return "資料暫時無法取得";
   }
   return Number(value).toLocaleString("zh-Hant", {
     minimumFractionDigits: 2,
@@ -170,14 +184,20 @@ function buildSnapshotCard(label, value, changePct, detail = "") {
       <span class="label">${label}</span>
       <div class="value">${formatNumber(value)}</div>
       <div class="change ${changeClass}">
-        ${arrowForChange(changePct)} ${changePct === null || changePct === undefined ? "⚠️ 資料暫時無法取得" : `${Number(changePct).toFixed(2)}%`}
+        ${arrowForChange(changePct)} ${changePct === null || changePct === undefined ? "資料暫時無法取得" : `${Number(changePct).toFixed(2)}%`}
       </div>
       ${detailMarkup}
     </article>
   `;
 }
 
-function renderEmpty(container, message = "⚠️ 資料暫時無法取得") {
+function cleanUiText(value) {
+  return String(value ?? "")
+    .replace(/^[^\p{L}\p{N}]+/u, "")
+    .trim();
+}
+
+function renderEmpty(container, message = "資料暫時無法取得") {
   container.innerHTML = `<div class="empty-state">${message}</div>`;
 }
 
@@ -217,7 +237,7 @@ function renderSnapshot(payload) {
 
   elements.marketSnapshot.innerHTML = cards.length
     ? cards.join("")
-    : `<div class="empty-state">⚠️ 資料暫時無法取得</div>`;
+    : `<div class="empty-state">資料暫時無法取得</div>`;
 }
 
 function renderTrumpUpdates(items) {
@@ -230,9 +250,9 @@ function renderTrumpUpdates(items) {
     .map(
       (item) => `
         <article class="content-card">
-          <span class="source-tag">${item.source ?? "Unknown"}</span>
-          <div class="body-text">${item.content ?? "⚠️ 資料暫時無法取得"}</div>
-          <div class="impact-text">影響分析：${item.impact ?? "⚠️ 資料暫時無法取得"}</div>
+          <span class="source-tag">${cleanUiText(item.source ?? "Unknown")}</span>
+          <div class="body-text">${cleanUiText(item.content ?? "資料暫時無法取得")}</div>
+          <div class="impact-text">影響分析：${cleanUiText(item.impact ?? "資料暫時無法取得")}</div>
         </article>
       `
     )
@@ -249,14 +269,14 @@ function renderFinancialNews(items) {
     .map(
       (item, index) => `
         <article class="content-card">
-          <strong>${item.title ?? "⚠️ 資料暫時無法取得"}</strong>
-          <div class="summary-text">${item.summary ?? "⚠️ 資料暫時無法取得"}</div>
+          <strong>${cleanUiText(item.title ?? "資料暫時無法取得")}</strong>
+          <div class="summary-text">${cleanUiText(item.summary ?? "資料暫時無法取得")}</div>
           <button class="accordion-button" type="button" data-accordion-target="impact-${index}">
             <span>查看影響分析</span>
             <span>+</span>
           </button>
           <div id="impact-${index}" class="accordion-panel">
-            <div class="accordion-panel-inner impact-text">${item.impact ?? "⚠️ 資料暫時無法取得"}</div>
+            <div class="accordion-panel-inner impact-text">${cleanUiText(item.impact ?? "資料暫時無法取得")}</div>
           </div>
         </article>
       `
@@ -281,7 +301,7 @@ function renderEconomicEvents(payload) {
     .map(
       (item) => `
         <article class="content-card">
-          <div class="body-text">${item}</div>
+          <div class="body-text">${cleanUiText(item)}</div>
         </article>
       `
     )
@@ -289,7 +309,7 @@ function renderEconomicEvents(payload) {
 }
 
 function renderInsight(payload) {
-  elements.aiInsight.textContent = payload.ai_insight || "⚠️ 本次 AI 洞察暫時無法生成。";
+  elements.aiInsight.textContent = cleanUiText(payload.ai_insight || "本次 AI 洞察暫時無法生成。");
 }
 
 function renderRisks(items) {
@@ -301,14 +321,17 @@ function renderRisks(items) {
   elements.riskList.innerHTML = items
     .map(
       (item) => `
-        <article class="risk-card">⚠️ ${item}</article>
+        <article class="risk-card">
+          <span class="risk-kicker">Risk</span>
+          <div>${cleanUiText(item)}</div>
+        </article>
       `
     )
     .join("");
 }
 
 function renderSentiment(payload) {
-  elements.sentimentText.textContent = payload.sentiment || "市場情緒暫時無法判讀。";
+  elements.sentimentText.textContent = cleanUiText(payload.sentiment || "市場情緒暫時無法判讀。");
 }
 
 function renderFooter(payload) {
@@ -356,7 +379,7 @@ async function renderCurrentDigest() {
     if (state.currentType === "us") {
       renderEmpty(elements.economicEvents);
     }
-    elements.aiInsight.textContent = "⚠️ 本次 AI 洞察暫時無法生成。";
+    elements.aiInsight.textContent = "本次 AI 洞察暫時無法生成。";
     renderEmpty(elements.riskList);
     elements.sentimentText.textContent = "市場情緒暫時無法判讀。";
     elements.generatedAt.textContent = "資料生成時間（UTC）：--";
@@ -413,7 +436,7 @@ function applySavedTheme() {
   const theme = savedTheme === "light" ? "theme-light" : "theme-dark";
   document.body.classList.remove("theme-light", "theme-dark");
   document.body.classList.add(theme);
-  elements.themeToggleIcon.textContent = theme === "theme-light" ? "☀️" : "🌙";
+  elements.themeToggleIcon.innerHTML = theme === "theme-light" ? THEME_ICONS.light : THEME_ICONS.dark;
 }
 
 function toggleTheme() {
@@ -421,7 +444,7 @@ function toggleTheme() {
   document.body.classList.toggle("theme-light", !isLight);
   document.body.classList.toggle("theme-dark", isLight);
   localStorage.setItem("daily-digest-theme", isLight ? "dark" : "light");
-  elements.themeToggleIcon.textContent = isLight ? "🌙" : "☀️";
+  elements.themeToggleIcon.innerHTML = isLight ? THEME_ICONS.dark : THEME_ICONS.light;
 }
 
 async function init() {

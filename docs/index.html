@@ -24,7 +24,7 @@
           <h1>Daily Digest</h1>
         </div>
         <button id="theme-toggle" class="theme-toggle" type="button" aria-label="切換主題">
-          <span id="theme-toggle-icon">🌙</span>
+          <span id="theme-toggle-icon" class="theme-toggle-icon" aria-hidden="true"></span>
         </button>
       </header>
 
@@ -45,49 +45,49 @@
       <p id="status-message" class="status-message" aria-live="polite">正在載入資料…</p>
 
       <main class="content-stack">
-        <section class="section-block">
+        <section class="section-block section-wide">
           <div class="section-heading">
             <h2>市場快照</h2>
           </div>
           <div id="market-snapshot" class="snapshot-grid"></div>
         </section>
 
-        <section class="section-block">
+        <section class="section-block section-main">
           <div class="section-heading">
             <h2>川普動態</h2>
           </div>
           <div id="trump-updates" class="card-stack"></div>
         </section>
 
-        <section class="section-block">
+        <section class="section-block section-main">
           <div class="section-heading">
             <h2>財經新聞</h2>
           </div>
           <div id="financial-news" class="card-stack"></div>
         </section>
 
-        <section id="economic-events-section" class="section-block hidden">
+        <section id="economic-events-section" class="section-block section-side hidden">
           <div class="section-heading">
             <h2>重要經濟事件</h2>
           </div>
           <div id="economic-events" class="card-stack"></div>
         </section>
 
-        <section class="section-block">
+        <section class="section-block section-side">
           <div class="section-heading">
             <h2>AI 選股洞察</h2>
           </div>
           <article id="ai-insight" class="insight-card"></article>
         </section>
 
-        <section class="section-block">
+        <section class="section-block section-side">
           <div class="section-heading">
             <h2>風險提示</h2>
           </div>
           <div id="risk-list" class="card-stack"></div>
         </section>
 
-        <section class="section-block sentiment-block">
+        <section class="section-block section-wide sentiment-block">
           <div class="section-heading">
             <h2>市場情緒</h2>
           </div>

@@ -191,6 +191,20 @@ function buildSnapshotCard(label, value, changePct, detail = "") {
   `;
 }
 
+function buildSnapshotGroup(title, note, cards) {
+  return `
+    <section class="snapshot-group">
+      <div class="snapshot-group-header">
+        <h3>${title}</h3>
+        ${note ? `<span class="snapshot-group-note">${note}</span>` : ""}
+      </div>
+      <div class="snapshot-card-grid">
+        ${cards.join("")}
+      </div>
+    </section>
+  `;
+}
+
 function cleanUiText(value) {
   return String(value ?? "")
     .replace(/^[^\p{L}\p{N}]+/u, "")
@@ -202,41 +216,105 @@ function renderEmpty(container, message = "資料暫時無法取得") {
 }
 
 function renderSnapshot(payload) {
-  const cards = [];
+  const groups = [];
 
   if (payload.type === "tw") {
     const twIndex = payload.tw_market_index ?? {};
-    cards.push(
-      buildSnapshotCard(
-        twIndex.name ?? "台灣加權指數",
-        twIndex.price,
-        twIndex.change_pct,
-        "台股開盤前快速掌握大盤方向與自選股表現。"
+    groups.push(
+      buildSnapshotGroup("台股大盤", "指數", [
+        buildSnapshotCard(
+          twIndex.name ?? "台灣加權指數",
+          twIndex.price,
+          twIndex.change_pct,
+          "先看指數方向，再延伸到權值與自選股。"
+        ),
+      ])
+    );
+
+    groups.push(
+      buildSnapshotGroup(
+        "美股收盤",
+        "隔夜基調",
+        [
+          buildSnapshotCard("S&P 500", payload.us_market_close?.sp500?.price, payload.us_market_close?.sp500?.change_pct),
+          buildSnapshotCard("Dow Jones", payload.us_market_close?.dow?.price, payload.us_market_close?.dow?.change_pct),
+          buildSnapshotCard("Nasdaq", payload.us_market_close?.nasdaq?.price, payload.us_market_close?.nasdaq?.change_pct),
+        ]
       )
     );
 
-    for (const item of payload.tw_watchlist ?? []) {
-      cards.push(buildSnapshotCard(item.name ?? item.symbol, item.price, item.change_pct));
-    }
-  } else {
-    const indices = [
-      ["S&P 500", payload.us_market_close?.sp500],
-      ["Dow Jones", payload.us_market_close?.dow],
-      ["Nasdaq", payload.us_market_close?.nasdaq],
-      ["ES=F", payload.futures?.sp500],
-      ["NQ=F", payload.futures?.nasdaq],
-    ];
-    indices.forEach(([label, data]) => {
-      cards.push(buildSnapshotCard(label, data?.price, data?.change_pct));
-    });
+    groups.push(
+      buildSnapshotGroup(
+        "商品與加密",
+        "跨市場",
+        [
+          buildSnapshotCard("Bitcoin", payload.global_assets?.bitcoin?.price, payload.global_assets?.bitcoin?.change_pct),
+          buildSnapshotCard("Ethereum", payload.global_assets?.ether?.price, payload.global_assets?.ether?.change_pct),
+          buildSnapshotCard("Gold", payload.global_assets?.gold?.price, payload.global_assets?.gold?.change_pct),
+          buildSnapshotCard("WTI Crude", payload.global_assets?.oil?.price, payload.global_assets?.oil?.change_pct),
+        ]
+      )
+    );
 
-    for (const item of payload.us_watchlist ?? []) {
-      cards.push(buildSnapshotCard(item.name ?? item.symbol, item.price, item.change_pct));
-    }
+    groups.push(
+      buildSnapshotGroup(
+        "台股自選",
+        "個股",
+        (payload.tw_watchlist ?? []).map((item) =>
+          buildSnapshotCard(item.name ?? item.symbol, item.price, item.change_pct)
+        )
+      )
+    );
+  } else {
+    groups.push(
+      buildSnapshotGroup(
+        "美股指數",
+        "現貨",
+        [
+          buildSnapshotCard("S&P 500", payload.us_market_close?.sp500?.price, payload.us_market_close?.sp500?.change_pct),
+          buildSnapshotCard("Dow Jones", payload.us_market_close?.dow?.price, payload.us_market_close?.dow?.change_pct),
+          buildSnapshotCard("Nasdaq", payload.us_market_close?.nasdaq?.price, payload.us_market_close?.nasdaq?.change_pct),
+        ]
+      )
+    );
+
+    groups.push(
+      buildSnapshotGroup(
+        "指數期貨",
+        "盤前",
+        [
+          buildSnapshotCard("ES=F", payload.futures?.sp500?.price, payload.futures?.sp500?.change_pct),
+          buildSnapshotCard("NQ=F", payload.futures?.nasdaq?.price, payload.futures?.nasdaq?.change_pct),
+        ]
+      )
+    );
+
+    groups.push(
+      buildSnapshotGroup(
+        "商品與加密",
+        "跨市場",
+        [
+          buildSnapshotCard("Bitcoin", payload.global_assets?.bitcoin?.price, payload.global_assets?.bitcoin?.change_pct),
+          buildSnapshotCard("Ethereum", payload.global_assets?.ether?.price, payload.global_assets?.ether?.change_pct),
+          buildSnapshotCard("Gold", payload.global_assets?.gold?.price, payload.global_assets?.gold?.change_pct),
+          buildSnapshotCard("WTI Crude", payload.global_assets?.oil?.price, payload.global_assets?.oil?.change_pct),
+        ]
+      )
+    );
+
+    groups.push(
+      buildSnapshotGroup(
+        "美股自選",
+        "個股",
+        (payload.us_watchlist ?? []).map((item) =>
+          buildSnapshotCard(item.name ?? item.symbol, item.price, item.change_pct)
+        )
+      )
+    );
   }
 
-  elements.marketSnapshot.innerHTML = cards.length
-    ? cards.join("")
+  elements.marketSnapshot.innerHTML = groups.length
+    ? `<div class="snapshot-groups">${groups.join("")}</div>`
     : `<div class="empty-state">資料暫時無法取得</div>`;
 }
 
@@ -360,6 +438,7 @@ function bindAccordions() {
 async function renderCurrentDigest() {
   try {
     const payload = await fetchDigest(state.currentType, state.currentDate);
+    document.body.dataset.digestType = payload.type;
     renderSnapshot(payload);
     renderTrumpUpdates(payload.trump_updates);
     renderFinancialNews(payload.financial_news);

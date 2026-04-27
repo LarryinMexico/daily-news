@@ -228,6 +228,14 @@ def main() -> None:
             "nasdaq": {"symbol": "^IXIC", "name": "Nasdaq"},
         }
     )
+    global_assets = fetch_market_map(
+        {
+            "bitcoin": {"symbol": "BTC-USD", "name": "Bitcoin"},
+            "ether": {"symbol": "ETH-USD", "name": "Ethereum"},
+            "gold": {"symbol": "GC=F", "name": "Gold"},
+            "oil": {"symbol": "CL=F", "name": "WTI Crude"},
+        }
+    )
 
     news_api_key = os.getenv("NEWS_API_KEY", "").strip()
     newsapi_items = fetch_newsapi_articles(
@@ -277,6 +285,7 @@ def main() -> None:
         "generated_at": utc_timestamp(),
         "us_market_close": us_market_close,
         "tw_market_index": tw_market_index,
+        "global_assets": global_assets,
         "trump_updates": ai_sections["trump_updates"],
         "financial_news": ai_sections["financial_news"],
         "tw_watchlist": tw_watchlist,

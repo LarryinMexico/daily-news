@@ -218,8 +218,25 @@ h2 {
 
 .content-stack {
   display: grid;
-  grid-template-columns: minmax(0, 1.5fr) minmax(320px, 0.9fr);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 28px 34px;
+}
+
+body[data-digest-type="us"] .content-stack {
+  grid-template-areas:
+    "market market"
+    "trump insight"
+    "financial economic"
+    "risks risks"
+    "sentiment sentiment";
+}
+
+body[data-digest-type="tw"] .content-stack {
+  grid-template-areas:
+    "market market"
+    "trump insight"
+    "financial risks"
+    "sentiment sentiment";
 }
 
 .section-block {
@@ -228,15 +245,59 @@ h2 {
 }
 
 .section-main {
-  grid-column: 1;
+  grid-area: trump;
 }
 
 .section-side {
-  grid-column: 2;
+  grid-area: insight;
 }
 
 .section-wide {
-  grid-column: 1 / -1;
+  grid-area: market;
+}
+
+#financial-news {
+  display: grid;
+  gap: 18px;
+}
+
+#economic-events {
+  display: grid;
+  gap: 18px;
+}
+
+#trump-updates {
+  display: grid;
+  gap: 18px;
+}
+
+#risk-list {
+  display: grid;
+  gap: 18px;
+}
+
+main > section:nth-of-type(2) {
+  grid-area: trump;
+}
+
+main > section:nth-of-type(3) {
+  grid-area: insight;
+}
+
+main > section:nth-of-type(4) {
+  grid-area: financial;
+}
+
+main > section:nth-of-type(5) {
+  grid-area: economic;
+}
+
+main > section:nth-of-type(6) {
+  grid-area: risks;
+}
+
+main > section:nth-of-type(7) {
+  grid-area: sentiment;
 }
 
 .section-block::before {
@@ -263,7 +324,46 @@ h2 {
 }
 
 .snapshot-grid {
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.snapshot-groups {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.snapshot-group {
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.03);
+  box-shadow: var(--shadow);
+}
+
+.snapshot-group-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.snapshot-group-header h3 {
+  margin: 0;
+  font-family: "Playfair Display", serif;
+  font-size: 1.2rem;
+}
+
+.snapshot-group-note {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
+
+.snapshot-card-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
 }
 
 .snapshot-card,
@@ -315,6 +415,7 @@ h2 {
 .content-card {
   display: grid;
   gap: 10px;
+  height: 100%;
 }
 
 .source-tag {
@@ -434,14 +535,27 @@ h2 {
 
   .content-stack {
     grid-template-columns: 1fr;
+    grid-template-areas:
+      "market"
+      "trump"
+      "insight"
+      "financial"
+      "economic"
+      "risks"
+      "sentiment";
   }
 
   .section-main,
   .section-side,
   .section-wide {
-    grid-column: 1;
+    grid-area: auto;
   }
 
+  .snapshot-groups {
+    grid-template-columns: 1fr;
+  }
+
+  .snapshot-card-grid,
   .snapshot-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -457,7 +571,8 @@ h2 {
     align-items: center;
   }
 
-  .snapshot-grid {
+  .snapshot-grid,
+  .snapshot-card-grid {
     grid-template-columns: 1fr;
   }
 
@@ -468,6 +583,20 @@ h2 {
   .tabs {
     width: 100%;
     justify-content: center;
+  }
+
+  .snapshot-group {
+    padding: 16px;
+  }
+
+  .snapshot-group-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .snapshot-card .value {
+    font-size: clamp(1.35rem, 9vw, 2rem);
   }
 
   h1 {

@@ -15,6 +15,7 @@ from news_fetcher import (
     fetch_rss_feed,
     fetch_truth_social_updates,
 )
+from site_url import resolve_site_url
 from stock_fetcher import fetch_market_map, fetch_symbol_snapshot, fetch_watchlist_quotes, load_watchlist
 from telegram_sender import escape_markdown_v2, send_markdown_messages
 
@@ -150,6 +151,7 @@ def safe_build_ai_sections(
 
 
 def build_message(payload: Dict[str, Any]) -> str:
+    site_url = resolve_site_url()
     lines = [
         "*每日財經摘要｜台股早報*",
         f"日期：{escape_markdown_v2(payload['date'])}",
@@ -205,6 +207,8 @@ def build_message(payload: Dict[str, Any]) -> str:
         lines.append(f"• {escape_markdown_v2(risk)}")
 
     lines.extend(["", "*市場情緒*", escape_markdown_v2(payload.get("sentiment", ""))])
+    if site_url:
+        lines.extend(["", f"網頁版：{escape_markdown_v2(site_url)}"])
     return "\n".join(lines)
 
 

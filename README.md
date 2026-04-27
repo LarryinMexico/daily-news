@@ -160,6 +160,7 @@ python src/generate_site.py
 可選環境變數：
 
 - `GEMINI_MODEL`：指定 Gemini model，預設為 `gemini-2.5-flash`
+- `SITE_URL`：覆蓋 Telegram 訊息中附帶的網站連結；若未設定，會優先用 `GITHUB_REPOSITORY` 自動推導 GitHub Pages 網址
 
 ## 錯誤處理設計
 

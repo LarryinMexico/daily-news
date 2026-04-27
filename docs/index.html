@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Daily Digest</title>
+    <meta
+      name="description"
+      content="每日財經摘要：台股與美股、自選股、川普動態、總經事件與 AI 市場洞察。"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body class="theme-dark">
+    <div class="page-shell">
+      <header class="site-header">
+        <div>
+          <p class="eyebrow">Automated Market Briefing</p>
+          <h1>Daily Digest</h1>
+        </div>
+        <button id="theme-toggle" class="theme-toggle" type="button" aria-label="切換主題">
+          <span id="theme-toggle-icon">🌙</span>
+        </button>
+      </header>
+
+      <nav class="tabs" aria-label="市場切換">
+        <button class="tab-button is-active" data-type="tw" type="button">台股</button>
+        <button class="tab-button" data-type="us" type="button">美股</button>
+      </nav>
+
+      <section class="date-toolbar" aria-label="日期選擇器">
+        <button id="prev-date" class="date-nav" type="button" aria-label="上一個日期">←</button>
+        <div class="date-display">
+          <span class="date-label">目前查看</span>
+          <strong id="current-date-text">載入中</strong>
+        </div>
+        <button id="next-date" class="date-nav" type="button" aria-label="下一個日期">→</button>
+      </section>
+
+      <p id="status-message" class="status-message" aria-live="polite">正在載入資料…</p>
+
+      <main class="content-stack">
+        <section class="section-block">
+          <div class="section-heading">
+            <h2>市場快照</h2>
+          </div>
+          <div id="market-snapshot" class="snapshot-grid"></div>
+        </section>
+
+        <section class="section-block">
+          <div class="section-heading">
+            <h2>川普動態</h2>
+          </div>
+          <div id="trump-updates" class="card-stack"></div>
+        </section>
+
+        <section class="section-block">
+          <div class="section-heading">
+            <h2>財經新聞</h2>
+          </div>
+          <div id="financial-news" class="card-stack"></div>
+        </section>
+
+        <section id="economic-events-section" class="section-block hidden">
+          <div class="section-heading">
+            <h2>重要經濟事件</h2>
+          </div>
+          <div id="economic-events" class="card-stack"></div>
+        </section>
+
+        <section class="section-block">
+          <div class="section-heading">
+            <h2>AI 選股洞察</h2>
+          </div>
+          <article id="ai-insight" class="insight-card"></article>
+        </section>
+
+        <section class="section-block">
+          <div class="section-heading">
+            <h2>風險提示</h2>
+          </div>
+          <div id="risk-list" class="card-stack"></div>
+        </section>
+
+        <section class="section-block sentiment-block">
+          <div class="section-heading">
+            <h2>市場情緒</h2>
+          </div>
+          <p id="sentiment-text" class="sentiment-text"></p>
+        </section>
+      </main>
+
+      <footer class="site-footer">
+        <p id="generated-at">資料生成時間：--</p>
+        <p>資料來源：NewsAPI, Yahoo Finance, Truth Social</p>
+      </footer>
+    </div>
+
+    <script src="./app.js" defer></script>
+  </body>
+</html>

@@ -1,0 +1,16 @@
+{
+  "tw_stocks": [
+    {"symbol": "2330.TW", "name": "台積電"},
+    {"symbol": "2317.TW", "name": "鴻海"},
+    {"symbol": "2454.TW", "name": "聯發科"},
+    {"symbol": "006208.TW", "name": "富邦台50 ETF"},
+    {"symbol": "00878.TW", "name": "國泰永續高股息 ETF"}
+  ],
+  "us_stocks": [
+    {"symbol": "NVDA", "name": "輝達"},
+    {"symbol": "AAPL", "name": "蘋果"},
+    {"symbol": "TSLA", "name": "特斯拉"},
+    {"symbol": "SPY", "name": "S&P500 ETF"},
+    {"symbol": "QQQ", "name": "那斯達克100 ETF"}
+  ]
+}

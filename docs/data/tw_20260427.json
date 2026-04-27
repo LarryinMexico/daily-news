@@ -1,0 +1,82 @@
+{
+  "date": "2026-04-27",
+  "type": "tw",
+  "generated_at": "2026-04-27T11:50:59Z",
+  "us_market_close": {
+    "sp500": {
+      "price": 7165.08,
+      "change_pct": 0.8
+    },
+    "dow": {
+      "price": 49230.71,
+      "change_pct": -0.16
+    },
+    "nasdaq": {
+      "price": 24836.6,
+      "change_pct": 1.63
+    }
+  },
+  "tw_market_index": {
+    "symbol": "^TWII",
+    "name": "台灣加權指數",
+    "price": 39616.63,
+    "change": 684.23,
+    "change_pct": 1.76
+  },
+  "trump_updates": [
+    {
+      "source": "Truth Social / Google News",
+      "content": "⚠️ 資料暫時無法取得",
+      "impact": "暫時無法完成川普政策動態分析。"
+    }
+  ],
+  "financial_news": [
+    {
+      "title": "⚠️ 資料暫時無法取得",
+      "summary": "本次整理時無法取得足夠新聞內容。",
+      "impact": "請稍後重新執行或檢查 API 設定。"
+    }
+  ],
+  "tw_watchlist": [
+    {
+      "symbol": "2330.TW",
+      "name": "台積電",
+      "price": 2265.0,
+      "change": 80.0,
+      "change_pct": 3.66
+    },
+    {
+      "symbol": "2317.TW",
+      "name": "鴻海",
+      "price": 228.0,
+      "change": 6.5,
+      "change_pct": 2.93
+    },
+    {
+      "symbol": "2454.TW",
+      "name": "聯發科",
+      "price": 2435.0,
+      "change": 0.0,
+      "change_pct": 0.0
+    },
+    {
+      "symbol": "006208.TW",
+      "name": "富邦台50 ETF",
+      "price": 215.45,
+      "change": 6.5,
+      "change_pct": 3.11
+    },
+    {
+      "symbol": "00878.TW",
+      "name": "國泰永續高股息 ETF",
+      "price": 25.0,
+      "change": 0.0,
+      "change_pct": 0.0
+    }
+  ],
+  "ai_insight": "⚠️ 本次 AI 洞察暫時無法生成。",
+  "risks": [
+    "⚠️ 風險整理暫時無法取得"
+  ],
+  "sentiment": "市場情緒暫時無法判讀。"
+}

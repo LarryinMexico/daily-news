@@ -1,5 +1,7 @@
 {
-  "available_dates": [],
-  "latest_tw": null,
+  "available_dates": [
+    "20260427"
+  ],
+  "latest_tw": "20260427",
   "latest_us": null
 }

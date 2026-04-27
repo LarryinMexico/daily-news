@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 from typing import List
 
 import requests
@@ -7,14 +8,19 @@ import requests
 
 TELEGRAM_API_BASE = "https://api.telegram.org"
 TELEGRAM_MESSAGE_LIMIT = 4096
+MARKDOWN_V2_SPECIAL_CHARS = r"_*[]()~`>#+-=|{}.!"
 
 
 def escape_markdown_v2(text: str) -> str:
-    escape_chars = r"_*[]()~`>#+-=|{}.!"
     escaped = text or ""
-    for char in escape_chars:
+    for char in MARKDOWN_V2_SPECIAL_CHARS:
         escaped = escaped.replace(char, f"\\{char}")
     return escaped
+
+
+def unescape_markdown_v2(text: str) -> str:
+    pattern = r"\\([_\*\[\]\(\)~`>#+\-=|{}.!])"
+    return re.sub(pattern, r"\1", text or "")
 
 
 def split_message(text: str, limit: int = TELEGRAM_MESSAGE_LIMIT - 150) -> List[str]:
@@ -52,7 +58,7 @@ def send_markdown_messages(bot_token: str, chat_id: str, text: str) -> None:
         return
 
     for chunk in split_message(text):
-        requests.post(
+        markdown_response = requests.post(
             f"{TELEGRAM_API_BASE}/bot{bot_token}/sendMessage",
             json={
                 "chat_id": chat_id,
@@ -61,4 +67,21 @@ def send_markdown_messages(bot_token: str, chat_id: str, text: str) -> None:
                 "disable_web_page_preview": True,
             },
             timeout=20,
-        ).raise_for_status()
+        )
+        try:
+            markdown_response.raise_for_status()
+        except requests.HTTPError as exc:
+            status_code = getattr(exc.response, "status_code", None)
+            if status_code != 400:
+                raise
+
+            plain_response = requests.post(
+                f"{TELEGRAM_API_BASE}/bot{bot_token}/sendMessage",
+                json={
+                    "chat_id": chat_id,
+                    "text": unescape_markdown_v2(chunk),
+                    "disable_web_page_preview": True,
+                },
+                timeout=20,
+            )
+            plain_response.raise_for_status()

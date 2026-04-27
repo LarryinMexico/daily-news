@@ -8,7 +8,8 @@ from pathlib import Path
 from typing import Any, Dict, List
 from zoneinfo import ZoneInfo
 
-import google.generativeai as genai
+from google import genai
+from google.genai import types
 
 from news_fetcher import (
     dedupe_articles,
@@ -76,13 +77,19 @@ def call_gemini_json(prompt: str) -> Dict[str, Any]:
     if not api_key:
         raise RuntimeError("GEMINI_API_KEY is not configured")
 
-    genai.configure(api_key=api_key)
-    model = genai.GenerativeModel("gemini-1.5-flash")
     last_error: Exception | None = None
     for _ in range(3):
         try:
-            response = model.generate_content(prompt)
-            return extract_json_block(response.text)
+            with genai.Client(api_key=api_key) as client:
+                response = client.models.generate_content(
+                    model="gemini-1.5-flash",
+                    contents=prompt,
+                    config=types.GenerateContentConfig(
+                        response_mime_type="application/json",
+                        temperature=0.2,
+                    ),
+                )
+            return extract_json_block(response.text or "")
         except Exception as exc:
             last_error = exc
             time.sleep(5)

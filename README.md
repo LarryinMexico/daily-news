@@ -63,7 +63,7 @@ daily-news/
 
 說明：
 
-- `GEMINI_API_KEY`：用來呼叫 `gemini-1.5-flash`
+- `GEMINI_API_KEY`：用來呼叫 Gemini API
 - `TELEGRAM_BOT_TOKEN`：你的 Telegram Bot token
 - `TELEGRAM_CHAT_ID`：接收訊息的 chat id
 - `NEWS_API_KEY`：用來抓 NewsAPI 財經新聞
@@ -156,6 +156,10 @@ python src/tw_digest.py
 python src/us_digest.py
 python src/generate_site.py
 ```
+
+可選環境變數：
+
+- `GEMINI_MODEL`：指定 Gemini model，預設為 `gemini-2.5-flash`
 
 ## 錯誤處理設計
 

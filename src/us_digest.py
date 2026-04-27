@@ -2,15 +2,12 @@ from __future__ import annotations
 
 import json
 import os
-import time
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List
 from zoneinfo import ZoneInfo
 
-from google import genai
-from google.genai import types
-
+from gemini_client import call_gemini_json
 from news_fetcher import (
     dedupe_articles,
     fetch_google_news_search,
@@ -59,41 +56,8 @@ def fallback_financial_news() -> List[Dict[str, str]]:
     ]
 
 
-def extract_json_block(text: str) -> Dict[str, Any]:
-    candidate = text.strip()
-    if candidate.startswith("```"):
-        lines = candidate.splitlines()
-        if len(lines) >= 3:
-            candidate = "\n".join(lines[1:-1]).strip()
-    start = candidate.find("{")
-    end = candidate.rfind("}")
-    if start == -1 or end == -1:
-        raise ValueError("No JSON object found in Gemini response")
-    return json.loads(candidate[start : end + 1])
-
-
-def call_gemini_json(prompt: str) -> Dict[str, Any]:
-    api_key = os.getenv("GEMINI_API_KEY", "").strip()
-    if not api_key:
-        raise RuntimeError("GEMINI_API_KEY is not configured")
-
-    last_error: Exception | None = None
-    for _ in range(3):
-        try:
-            with genai.Client(api_key=api_key) as client:
-                response = client.models.generate_content(
-                    model="gemini-1.5-flash",
-                    contents=prompt,
-                    config=types.GenerateContentConfig(
-                        response_mime_type="application/json",
-                        temperature=0.2,
-                    ),
-                )
-            return extract_json_block(response.text or "")
-        except Exception as exc:
-            last_error = exc
-            time.sleep(5)
-    raise RuntimeError(f"Gemini request failed after retries: {last_error}")
+def count_real_articles(items: List[Dict[str, str]]) -> int:
+    return sum(1 for item in items if not item.get("title", "").startswith("⚠️"))
 
 
 def build_ai_sections(
@@ -183,7 +147,8 @@ def safe_build_ai_sections(
             "risks": result.get("risks") or ["⚠️ 風險整理暫時無法取得"],
             "sentiment": result.get("sentiment") or "市場情緒暫時無法判讀。",
         }
-    except Exception:
+    except Exception as exc:
+        print(f"[US digest] AI summary failed: {exc}")
         return {
             "trump_updates": fallback_trump_updates(),
             "financial_news": fallback_financial_news(),
@@ -296,9 +261,20 @@ def main() -> None:
     trump_truth_items = fetch_truth_social_updates(limit=3)
     trump_search_items = fetch_google_news_search("Trump statement policy", limit=3)
 
+    print(f"[US digest] NewsAPI articles: {count_real_articles(newsapi_items)}")
+    print(f"[US digest] Google business topic RSS articles: {count_real_articles(google_business_items)}")
+    print(f"[US digest] Economic NewsAPI articles: {count_real_articles(economic_newsapi_items)}")
+    print(f"[US digest] Economic Google RSS articles: {count_real_articles(economic_google_items)}")
+    print(f"[US digest] Truth Social items: {count_real_articles(trump_truth_items)}")
+    print(f"[US digest] Trump search RSS items: {count_real_articles(trump_search_items)}")
+
     financial_articles = dedupe_articles(newsapi_items + google_business_items, max_items=8)
     economic_source_articles = dedupe_articles(economic_newsapi_items + economic_google_items, max_items=6)
     trump_articles = dedupe_articles(trump_truth_items + trump_search_items, max_items=4)
+
+    print(f"[US digest] Financial articles after dedupe: {len(financial_articles)}")
+    print(f"[US digest] Economic source articles after dedupe: {len(economic_source_articles)}")
+    print(f"[US digest] Trump articles after dedupe: {len(trump_articles)}")
 
     ai_sections = safe_build_ai_sections(
         trump_articles,

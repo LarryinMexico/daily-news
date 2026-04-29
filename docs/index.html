@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Daily Digest</title>
+    <title>Daily</title>
     <meta
       name="description"
       content="每日財經摘要：台股與美股、自選股、川普動態、總經事件與 AI 市場洞察。"
@@ -20,8 +20,8 @@
     <div class="page-shell">
       <header class="site-header">
         <div>
-          <p class="eyebrow">Automated Market Briefing</p>
-          <h1>Daily Digest</h1>
+          <h1>Daily</h1>
+          <p id="header-subtitle" class="header-subtitle">Model · --</p>
         </div>
         <button id="theme-toggle" class="theme-toggle" type="button" aria-label="切換主題">
           <span id="theme-toggle-icon" class="theme-toggle-icon" aria-hidden="true"></span>
@@ -71,6 +71,7 @@
             <h2>財經新聞</h2>
           </div>
           <div id="financial-news" class="card-stack"></div>
+          <button id="financial-news-toggle" class="list-toggle hidden" type="button"></button>
         </section>
 
         <section id="economic-events-section" class="section-block section-side hidden">
@@ -78,6 +79,7 @@
             <h2>重要經濟事件</h2>
           </div>
           <div id="economic-events" class="card-stack"></div>
+          <button id="economic-events-toggle" class="list-toggle hidden" type="button"></button>
         </section>
 
         <section class="section-block section-side">

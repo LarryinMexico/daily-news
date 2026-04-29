@@ -7,7 +7,7 @@ from pathlib import Path
 from typing import Any, Dict, List
 from zoneinfo import ZoneInfo
 
-from gemini_client import call_gemini_json
+from gemini_client import call_gemini_json, get_gemini_model_name
 from news_fetcher import (
     dedupe_articles,
     fetch_google_news_search,
@@ -304,6 +304,7 @@ def main() -> None:
     payload = {
         "date": display_date,
         "type": "us",
+        "model": get_gemini_model_name(),
         "generated_at": utc_timestamp(),
         "us_market_close": us_market_close,
         "futures": futures,

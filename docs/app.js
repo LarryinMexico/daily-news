@@ -32,12 +32,15 @@ const elements = {
   marketSnapshot: document.getElementById("market-snapshot"),
   trumpUpdates: document.getElementById("trump-updates"),
   financialNews: document.getElementById("financial-news"),
+  financialNewsToggle: document.getElementById("financial-news-toggle"),
   economicEventsSection: document.getElementById("economic-events-section"),
   economicEvents: document.getElementById("economic-events"),
+  economicEventsToggle: document.getElementById("economic-events-toggle"),
   aiInsight: document.getElementById("ai-insight"),
   riskList: document.getElementById("risk-list"),
   sentimentText: document.getElementById("sentiment-text"),
   generatedAt: document.getElementById("generated-at"),
+  headerSubtitle: document.getElementById("header-subtitle"),
 };
 
 function setStatus(message) {
@@ -205,6 +208,39 @@ function buildSnapshotGroup(title, note, cards) {
   `;
 }
 
+function humanizeModelName(modelName) {
+  return cleanUiText(modelName || "gemini-2.5-flash")
+    .replace(/^gemini-/i, "Gemini ")
+    .replace(/-/g, " ");
+}
+
+function setupCollapsibleList(container, toggle, itemCount, label) {
+  if (!container || !toggle) return;
+
+  if (itemCount <= 3) {
+    container.classList.remove("is-collapsed");
+    toggle.classList.add("hidden");
+    toggle.textContent = "";
+    return;
+  }
+
+  container.classList.add("is-collapsed");
+  toggle.classList.remove("hidden");
+  toggle.dataset.expanded = "false";
+  toggle.textContent = `展開全部 ${label}`;
+}
+
+function bindListToggle(toggle, container, label) {
+  if (!toggle || !container) return;
+
+  toggle.onclick = () => {
+    const isExpanded = toggle.dataset.expanded === "true";
+    container.classList.toggle("is-collapsed", isExpanded);
+    toggle.dataset.expanded = isExpanded ? "false" : "true";
+    toggle.textContent = isExpanded ? `展開全部 ${label}` : `收合 ${label}`;
+  };
+}
+
 function cleanUiText(value) {
   return String(value ?? "")
     .replace(/^[^\p{L}\p{N}]+/u, "")
@@ -340,6 +376,7 @@ function renderTrumpUpdates(items) {
 function renderFinancialNews(items) {
   if (!items?.length) {
     renderEmpty(elements.financialNews);
+    elements.financialNewsToggle.classList.add("hidden");
     return;
   }
 
@@ -360,6 +397,8 @@ function renderFinancialNews(items) {
       `
     )
     .join("");
+
+  setupCollapsibleList(elements.financialNews, elements.financialNewsToggle, items.length, "財經新聞");
 }
 
 function renderEconomicEvents(payload) {
@@ -372,6 +411,7 @@ function renderEconomicEvents(payload) {
   const items = payload.economic_events ?? [];
   if (!items.length) {
     renderEmpty(elements.economicEvents);
+    elements.economicEventsToggle.classList.add("hidden");
     return;
   }
 
@@ -384,6 +424,8 @@ function renderEconomicEvents(payload) {
       `
     )
     .join("");
+
+  setupCollapsibleList(elements.economicEvents, elements.economicEventsToggle, items.length, "重要經濟事件");
 }
 
 function renderInsight(payload) {
@@ -414,6 +456,7 @@ function renderSentiment(payload) {
 
 function renderFooter(payload) {
   elements.generatedAt.textContent = `資料生成時間（UTC）：${payload.generated_at ?? "--"}`;
+  elements.headerSubtitle.textContent = `Model · ${humanizeModelName(payload.model)}`;
 }
 
 function updateDateControls(typeDates) {
@@ -448,6 +491,8 @@ async function renderCurrentDigest() {
     renderSentiment(payload);
     renderFooter(payload);
     bindAccordions();
+    bindListToggle(elements.financialNewsToggle, elements.financialNews, "財經新聞");
+    bindListToggle(elements.economicEventsToggle, elements.economicEvents, "重要經濟事件");
     elements.currentDateText.textContent = formatDateText(state.currentDate);
     setStatus(`顯示 ${state.currentType === "tw" ? "台股" : "美股"} ${formatDateText(state.currentDate)} 摘要`);
   } catch (error) {

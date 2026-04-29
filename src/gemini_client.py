@@ -16,6 +16,10 @@ def load_genai_modules() -> Tuple[Any, Any]:
     return genai, types
 
 
+def get_gemini_model_name() -> str:
+    return os.getenv("GEMINI_MODEL", DEFAULT_GEMINI_MODEL).strip() or DEFAULT_GEMINI_MODEL
+
+
 def extract_json_block(text: str) -> Dict[str, Any]:
     candidate = text.strip()
     if candidate.startswith("```"):
@@ -36,7 +40,7 @@ def call_gemini_json(prompt: str) -> Dict[str, Any]:
         raise RuntimeError("GEMINI_API_KEY is not configured")
 
     genai, types = load_genai_modules()
-    model_name = os.getenv("GEMINI_MODEL", DEFAULT_GEMINI_MODEL).strip() or DEFAULT_GEMINI_MODEL
+    model_name = get_gemini_model_name()
     last_error: Exception | None = None
 
     for attempt in range(1, 4):

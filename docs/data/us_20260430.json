@@ -1,0 +1,107 @@
+{
+  "date": "2026-04-30",
+  "type": "us",
+  "model": "gemini-2.5-flash",
+  "generated_at": "2026-04-30T15:27:05Z",
+  "us_market_close": {
+    "sp500": {
+      "price": 7167.5,
+      "change_pct": 0.44
+    },
+    "dow": {
+      "price": 49482.27,
+      "change_pct": 1.27
+    },
+    "nasdaq": {
+      "price": 24711.86,
+      "change_pct": 0.16
+    }
+  },
+  "futures": {
+    "sp500": {
+      "price": 7196.5,
+      "change_pct": 0.4
+    },
+    "nasdaq": {
+      "price": 27398.75,
+      "change_pct": 0.27
+    }
+  },
+  "global_assets": {
+    "bitcoin": {
+      "price": 76429.85,
+      "change_pct": 0.86
+    },
+    "ether": {
+      "price": 2265.27,
+      "change_pct": 0.53
+    },
+    "gold": {
+      "price": 4630.8,
+      "change_pct": 1.88
+    },
+    "oil": {
+      "price": 104.73,
+      "change_pct": -2.01
+    }
+  },
+  "economic_events": [
+    "⚠️ 資料暫時無法取得"
+  ],
+  "trump_updates": [
+    {
+      "source": "Truth Social / Google News",
+      "content": "⚠️ 資料暫時無法取得",
+      "impact": "暫時無法完成川普政策動態分析。"
+    }
+  ],
+  "financial_news": [
+    {
+      "title": "⚠️ 資料暫時無法取得",
+      "summary": "本次整理時無法取得足夠新聞內容。",
+      "impact": "請稍後重新執行或檢查 API 設定。"
+    }
+  ],
+  "us_watchlist": [
+    {
+      "symbol": "NVDA",
+      "name": "輝達",
+      "price": 201.29,
+      "change": -7.96,
+      "change_pct": -3.8
+    },
+    {
+      "symbol": "AAPL",
+      "name": "蘋果",
+      "price": 271.41,
+      "change": 1.24,
+      "change_pct": 0.46
+    },
+    {
+      "symbol": "TSLA",
+      "name": "特斯拉",
+      "price": 378.23,
+      "change": 5.43,
+      "change_pct": 1.46
+    },
+    {
+      "symbol": "SPY",
+      "name": "S&P500 ETF",
+      "price": 714.51,
+      "change": 2.93,
+      "change_pct": 0.41
+    },
+    {
+      "symbol": "QQQ",
+      "name": "那斯達克100 ETF",
+      "price": 663.41,
+      "change": 1.84,
+      "change_pct": 0.28
+    }
+  ],
+  "ai_insight": "⚠️ 本次 AI 洞察暫時無法生成。",
+  "risks": [
+    "⚠️ 風險整理暫時無法取得"
+  ],
+  "sentiment": "市場情緒暫時無法判讀。"
+}

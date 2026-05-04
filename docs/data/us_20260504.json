@@ -1,0 +1,126 @@
+{
+  "date": "2026-05-04",
+  "type": "us",
+  "model": "gemini-2.5-flash",
+  "generated_at": "2026-05-04T15:29:02Z",
+  "us_market_close": {
+    "sp500": {
+      "price": 7208.67,
+      "change_pct": -0.3
+    },
+    "dow": {
+      "price": 49133.89,
+      "change_pct": -0.74
+    },
+    "nasdaq": {
+      "price": 25062.05,
+      "change_pct": -0.21
+    }
+  },
+  "futures": {
+    "sp500": {
+      "price": 7246.5,
+      "change_pct": -0.16
+    },
+    "nasdaq": {
+      "price": 27830.75,
+      "change_pct": -0.02
+    }
+  },
+  "global_assets": {
+    "bitcoin": {
+      "price": 79758.0,
+      "change_pct": 1.55
+    },
+    "ether": {
+      "price": 2349.91,
+      "change_pct": 1.22
+    },
+    "gold": {
+      "price": 4554.7,
+      "change_pct": -1.62
+    },
+    "oil": {
+      "price": 104.08,
+      "change_pct": 2.1
+    }
+  },
+  "economic_events": [
+    "宏觀不確定性導致比特幣購買暫停，影響市場情緒。",
+    "美伊衝突影響信貸市場，降低聯準會2026年降息預期，並帶來通膨壓力。",
+    "美國債務負擔沉重，財政治理長期惡化，可能導致抵押貸款利率上升及貸款成本增加。",
+    "交易員面臨兩面尾部風險，股市回升，但能源價格上漲構成持續壓力。"
+  ],
+  "trump_updates": [
+    {
+      "source": "PBS",
+      "content": "川普在拉斯維加斯稅務日圓桌會議上宣傳「小費免稅」政策。",
+      "impact": "此政策可能影響服務業及消費者支出，但具體市場影響尚不明確。"
+    }
+  ],
+  "financial_news": [
+    {
+      "title": "預測：亞馬遜股價在創歷史新高後仍值得買入，因AWS營收加速增長",
+      "summary": "亞馬遜股價在AWS營收加速增長的推動下創下歷史新高，分析師認為仍是買入時機。",
+      "impact": "對亞馬遜及雲端運算產業構成利好，顯示強勁增長勢頭。"
+    },
+    {
+      "title": "Peloton股價在四月飆升27%的原因",
+      "summary": "健身器材公司Peloton的股價在四月份大幅上漲27%。",
+      "impact": "對Peloton投資者是利好消息，可能反映市場對其前景的樂觀情緒。"
+    },
+    {
+      "title": "哪支無人機股票將主導下一場戰爭：AVAV、KTOS還是ONDS？",
+      "summary": "市場關注AVAV、KTOS和ONDS等無人機股票，探討其在未來衝突中的潛在主導地位。",
+      "impact": "凸顯國防及無人機技術領域的潛在增長和投資興趣。"
+    },
+    {
+      "title": "精神航空表示在停運後已接近完成客戶退款 - 衛報",
+      "summary": "精神航空（Spirit Airlines）在停運後，已接近完成對客戶的退款工作。",
+      "impact": "儘管停運本身是負面事件，但退款進度可能緩解部分對航空業的負面情緒。"
+    }
+  ],
+  "us_watchlist": [
+    {
+      "symbol": "NVDA",
+      "name": "輝達",
+      "price": 195.82,
+      "change": -2.62,
+      "change_pct": -1.32
+    },
+    {
+      "symbol": "AAPL",
+      "name": "蘋果",
+      "price": 276.98,
+      "change": -3.16,
+      "change_pct": -1.13
+    },
+    {
+      "symbol": "TSLA",
+      "name": "特斯拉",
+      "price": 388.59,
+      "change": -2.23,
+      "change_pct": -0.57
+    },
+    {
+      "symbol": "SPY",
+      "name": "S&P500 ETF",
+      "price": 718.58,
+      "change": -2.07,
+      "change_pct": -0.29
+    },
+    {
+      "symbol": "QQQ",
+      "name": "那斯達克100 ETF",
+      "price": 672.9,
+      "change": -1.25,
+      "change_pct": -0.19
+    }
+  ],
+  "ai_insight": "人工智慧與半導體產業持續強勁增長，亞馬遜AWS營收加速，顯示AI基礎設施需求旺盛。",
+  "risks": [
+    "美伊衝突引發的地緣政治風險，可能導致通膨壓力上升及聯準會降息延後。",
+    "美國債務負擔沉重及財政治理惡化，恐推高貸款成本並擠壓政府支出。"
+  ],
+  "sentiment": "謹慎偏空"
+}
